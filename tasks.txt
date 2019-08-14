@@ -1,0 +1,149 @@
+Aplicación Oxford
+
+* Template *
+[] - 
+
+/Index
+
+[LISTO] - Botón dummy para futura funcionalidad de "¿Olvidaste tu contraseña?"
+[LISTO] - Cambiar campo "Nombre" a "Correo electrónico"
+[LISTO] - Mostrar el error en una alerta si el login no se pudo realizar (response.error.key)
+[LISTO] - Validar que los inputs para el inicio de sesión no estén vacíos
+	* Usar una variable booleana para el correo electrónico
+	* Usar una variable booleana para la contraseña
+	* Si estas dos no son falsas permitir el inicio de sesión
+	Tres casos posibles de mensaje
+	- Correo pero no contraseña
+	- Contraseña pero no correo
+	- Ninguno
+	- Campos rellenados pero inicio de sesión no válido
+[LISTO] - Deshabilitar botón de login mientras se ejecuta la función para iniciar sesión
+
+/Register
+
+[] - Validación que la contraseña sea mínimo de 6 caracteres, si no es así, no permitir llamar a la función de registrarse, utilizar variable boleaba así como que la contraseñas coincidan
+[] - Mostrar el error en una alerta si el register no se pudo realizar (response.error.key)
+[] - Clave de familia de 4 dígitos hasta el momento, validar eso
+[] - Deshabilitar botón de registro de usuario mientras se ejecuta la función
+[] - Mensaje de registro exitoso
+[] - Mensaje de registro no exitoso
+
+/RegisterAdmin
+
+[LISTO] - Validación que la contraseña sea mínimo de 6 caracteres, si no es así, no permitir llamar a la función de registrarse, utilizar variable booleana así como que la contraseñas coincidan
+[LISTO] - Mostrar el error en una alerta si el registerAdmin no se pudo realizar (response.error.key)
+[LISTO] - Deshabilitar botón de registro de usuario mientras se ejecuta la función
+
+/Home
+
+[] - Mostrar el error en una alerta si el getUser no se pudo realizar (response.error.key)
+[] - Desactivar getUser() de esta página (/home)
+[] - En el menú hamburguesa:
+	* Mi información / Mi perfil
+	* Mis hijos / Mi familia
+	* Enlaces
+	* Cerrar sesión
+
+
+* GENERAL *
+
+[] - Hacer que los inputs se nivelen con el teclado
+[] - Quitar selección de texto de los botones (hechos por mi) que no son componentes que Quasar
+[] - Mostrar un mensaje de cuando no haya conexión a internet
+[] - Hacer que todos los enlaces y botones 'homemade' su texto no sea seleccionable
+
+* FECHAS DE ENTREGA *
+
+- 15 de Agosto: App Store y Play Store; Aplicación con los enlaces funcionando
+- Fecha por confirmar: Eventos / Notificaciones
+
+* PARA OSCAR *
+- En el inicio de sesión, aunque se ingrese una contraseña incorrecta el response code es positivo
+- Si el data está vacío es que no fue un inicio de sesión correcto
+
+
+---------- Minuta: 31 de Julio ----------
+
+/ Index
+[Listo] - Deshabilitar botón de login + Animación de inicio de sesión en el botón [Se decidió solo usar la animación]
+[No está devolviendo los '.errors'] - Mostrar por que no se pudo hacer login (errors.keys)
+Para Oscar lo de arriba ^ (No tiene error.response.data.errors)
+
+/ Register y RegisterAdmin
+[Listo] - Deshabilitar botón de login + Animación de registro de sesión en el botón [Se decidió solo usar la animación]
+[error.response.data.errors] - Mostrar por que no se pudo crear cuenta (errors.keys)
+Para Oscar: No valida que sea un email con formato correcto
+
+/ Home
+[Listo] - Adaptar el menú principal dependiendo del tipo de usuario que es (Administrador o Padre)
+[Listo] - Poner links falsos en los botones de la sección de enlaces
+- No hay función para mostrar el/los hijo(s) de un padre
+
+* GENERAL *
+Subir app a la repo
+Pasarle la ruta de los proyectos a Victor
+
+--- Minuta: 2 de Agosto ---
+
+/ Index
+- Para Oscar: Crear errores en la reponse de login()
+
+/ Register & RegisterAdmin
+
+/ Home
+- Volver "Inicio" un componente [Notificaciones nuevas y leídas] [Por mientras: Logo y mensaje de bienvenida]
+- Para Oscar: Creación de función getKidsByFamilyKey()
+- Para Oscar: Revisar CRUD de niños
+- Para Oscar: Los niños no tienen el atributo de 'Campus'
+- Para Rojo: Estilo en la información del usuario y en 'Mi Familia'
+
+- Rojo: Cambiar nombre de aplicación a OSE
+- Oscar: Heroku Connections / Load balancing
+
+Rojo:
+- Punto 2 de la lista
+- Punto 4 de la lista
+- Punto 6 en la información del usuario  de la lista
+- Instrucciones para instalar a aplicación iOS
+[NO SE VA A HACER] - Teclado levanta la página (WebView) en Android / No se ha checado en iOS
+
+--- Minuta: 5 de Agosto ----
+
+[LISTO] - Tarjetas de información con mejor formato [Colores Claros] y textos del mismo color, no combinados
+[LISTO] - Rediseño de la barra de navegación
+[LISTO] - Enlaces
+[LISTO] - Logo de OSE
+[LISTO] - No se ve el logo de /Home en la aplicación de Android / No he checado en iOS [En Android]
+[LISTO] - Botón de regresar en Android está mandando a /index y no a la vista anterior, hay de dos:
+	 	- Confirmación de que se quiere cerrar sesión
+		- O regresar al componente anterior
+
+PENDIENTES DE ROJO UNA VEZ QUE TERMINE OSCAR
+
+[LISTO] - Reparar showKidsByFamilyKey()
+[LISTO] - Que la clave de familia funcione en el login / Funcionalidad de validación de la llave de familia y envío en la parámetros de esta
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+PENDIENTES DE ROJO
+
+[LISTO] - En iOS: La barra superior de /index choca con el notch
+[LISTO] - En iOS: Los botones a otros recursos no funcionan
+
+[] - Verificación de que se tiene el token en cada página si no mandar a /index
+[] - Logo de la aplicación en iOS y en Android
+[] - Launch Screen en iOS y en Android
+[] - Cambiar NOMBRE de la aplicación a OSE
+
+Contraseña de la cuenta de iCloud no está bien
+Necesito el código de verificación que usaron para crear la cuenta
+
+[] - Subir proyecto a repositorio
+[] - Instrucciones para correr en iOS
+
+[] - Documentación para las tiendas de iOS / Android
+
+Documentación:
+
+Ruta para accesar al archivo .apk que nos permite probar la aplicación
+/Users/lars/oxfordApp/src-cordova/platforms/android/app/debug
