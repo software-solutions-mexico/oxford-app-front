@@ -89,22 +89,22 @@ export default {
           }
         })
           .then(function (response) {
-            console.log(response)
-            console.log(response.data)
-            console.log(response.data.data)
-            console.log(response.data.data.user)
+            // console.log(response)
+            // console.log(response.data)
+            // console.log(response.data.data)
+            // console.log(response.data.data.user)
             self.usuarioRegistrado = true
             self[`loading1`] = false
           })
           .catch(function (error) {
             // alert(error)
-            console.log(error)
+            // console.log(error)
             self.noUserRegistered = true
             self[`loading1`] = false
-            console.log(error.response.data.errors)
+            // console.log(error.response.data.errors)
             self.errors = error.response.data.errors
-            console.log(self.errors)
-            console.log(typeof (self.errors))
+            // console.log(self.errors)
+            // console.log(typeof (self.errors))
             // console.log(self.errors.length)
           })
       } else {

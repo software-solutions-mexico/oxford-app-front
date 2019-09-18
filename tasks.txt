@@ -130,10 +130,10 @@ PENDIENTES DE ROJO
 [LISTO] - En iOS: La barra superior de /index choca con el notch
 [LISTO] - En iOS: Los botones a otros recursos no funcionan
 
-[] - Verificación de que se tiene el token en cada página si no mandar a /index
-[] - Logo de la aplicación en iOS y en Android
-[] - Launch Screen en iOS y en Android
-[] - Cambiar NOMBRE de la aplicación a OSE
+[LISTO] - Verificación de que se tiene el token en cada página si no mandar a /index
+[A medias] - Logo de la aplicación en iOS y en Android
+[A medias] - Launch Screen en iOS y en Android
+[A medias] - Cambiar NOMBRE de la aplicación a OSE
 
 Contraseña de la cuenta de iCloud no está bien
 Necesito el código de verificación que usaron para crear la cuenta
@@ -147,3 +147,57 @@ Documentación:
 
 Ruta para accesar al archivo .apk que nos permite probar la aplicación
 /Users/lars/oxfordApp/src-cordova/platforms/android/app/debug
+
+
+////////////////////////////////////////////////////
+/ -- Minuta del Jueves, 4 de Septiembre de 2019 -- /
+////////////////////////////////////////////////////
+
+- Tipo de notificación
+	* Pago
+	* Cita
+	* Evento
+	* Noticia
+	* Evento
+	* Entrega de calificación
+	* Pago
+
+Para que tenga un ícono en específico
+
+Estado de notificación:
+	* Leída
+	* Asiste
+	* No asiste
+
+El usuario va a poder leer sus notificaciones
+
+La notificación se va a enviar a los padres por medio del nombre del niño
+- Búsqueda
+- Seleccionar
+- Enviar
+
+"Mandar a todos los padres de Barragán que va a haber una bailable"
+
+Excel de personas que deben -> Mandar notificaciones a todos
+
+Miércoles:
+- Forma visual de la forma
+- Propuesta terminada
+
+---- Minuta, Miércoles 11 de Septiembre ---
+
+Llamada al back-end para obtener toda la lista de niños que tengan la expresión regular de texto que está escribiendo.
+Ir mostrando los 10 más posibles.
+Ir cambiando los 10 primeros resultados en base a como va escribiendo.
+
+Lo mismo para la matrícula.
+
+Lo mismo para la clave de familia.
+
+Campus
+Grado
+Grupo
+
+Estos últimos tres sean multi select
+Agregar N
+Quitar N

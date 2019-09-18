@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A Quasar Framework app",
   "productName": "OSE",
-  "cordovaId": "org.cordova.quasar.app",
+  "cordovaId": "org.ose.app",
   "author": "Luis Alfonso Rojo Sánchez <luis_alfonso_96@hotmail.com>",
   "private": true,
   "scripts": {

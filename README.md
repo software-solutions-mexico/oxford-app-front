@@ -24,3 +24,9 @@ quasar build
 
 ### Customize the configuration
 See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
+
+### Compile for iOS and Android
+```export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+quasar build -m android
+quasar build -m ios
+```

@@ -89,7 +89,7 @@ export default {
     forgotPassword () {
       var self = this
       self.showForgotPasswordModal = true
-      console.log(self.showForgotPasswordModal)
+      // console.log(self.showForgotPasswordModal)
     },
     closeForgotPasswordModal () {
       var self = this
@@ -106,7 +106,9 @@ export default {
       // self.realButtton = false
       // self.fakeButtton = true
       /* */
-      if (self.username !== '' && self.password !== '' && self.familyKey !== '') {
+      /* */
+      // if (self.username !== '' && self.password !== '' && self.familyKey !== '') {
+      if (self.username !== '' && self.password !== '') {
         axios.post('https://oxford-app-api.herokuapp.com/v1/sessions', {
           headers: { 'Content-Type': 'application/json' },
           email: self.username,
@@ -115,22 +117,22 @@ export default {
         })
           .then(function (response) {
             self[`loading1`] = false
-            console.log(response)
+            // console.log(response)
             if (response.data.data.token !== undefined && response.data.data.user.id !== undefined) {
-              console.log('Pasa a /home')
+              // console.log('Pasa a /home')
               window.localStorage.setItem('token', response.data.data.token)
               window.localStorage.setItem('id', response.data.data.user.id)
               window.localStorage.setItem('email', response.data.data.user.email)
               self.$router.push('/home')
             } else {
-              console.log('No pasa a /home')
+              // console.log('No pasa a /home')
             }
           })
           .catch(function (error) {
             self[`loading1`] = false
             // console.log(error)
             self.incorrectLogin = true
-            console.log(error.response.data.errors)
+            // console.log(error.response.data.errors)
             // self.error = error.response.data.errors
             self.error = error.response.data.errors
             /*

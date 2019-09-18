@@ -85,7 +85,7 @@ export default {
       self.noRegisteredUser = false
       /**/
       if (self.nombre !== '' && self.correo !== '' && self.contrasena1 !== '' && self.contrasena2 !== '' && self.claveFamilia !== '' && self.contrasena1 === self.contrasena2) {
-        console.log('Entré a la creación de la cuenta')
+        // console.log('Entré a la creación de la cuenta')
         axios.post('https://oxford-app-api.herokuapp.com/v1/users', {
           user: {
             name: self.nombre,
@@ -110,25 +110,25 @@ export default {
             // console.log(response.data.status)
             // console.log(response.data.message)
             // console.log(response.data.token)
-            console.log(response.data)
-            console.log(response.data.data)
+            // console.log(response.data)
+            // console.log(response.data.data)
             // Tiene el email y el id //
-            console.log(response.data.data.user)
+            // console.log(response.data.data.user)
             // self.$router.push('/')
             self.usuarioRegistrado = true
             self[`loading1`] = false
           })
           .catch(function (error) {
             // alert(error)
-            console.log(error)
+            // console.log(error)
             self.noRegisteredUser = true
             self[`loading1`] = false
-            console.log(error.response.data.errors)
+            // console.log(error.response.data.errors)
             self.errors = error.response.data.errors
           })
       } else {
         self[`loading1`] = false
-        console.log('No entré a la creación de la cuenta')
+        // console.log('No entré a la creación de la cuenta')
         if (self.nombre === '') {
           self.noName = true
         }
