@@ -1,6 +1,7 @@
 # Usuario de prueba de padre
-exampleParent@mail.com
+exampleparent@mail.com
 123456
+3682
 
 # Usuario de prueba de administrador
 oscar@mail.com

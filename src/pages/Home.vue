@@ -52,7 +52,7 @@
             <!-- <q-item-label caption>quasar.dev</q-item-label> -->
           </q-item-section>
         </q-item>
-        <div v-if="role == 'parent'">
+        <div v-if="role == 'PARENT'">
         <q-item v-ripple clickable tag="a" @click="openMyFamily()">
           <q-item-section avatar>
             <q-icon name="accessibility" />
@@ -68,7 +68,15 @@
             <q-icon name="event_note" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Mis Notificaciones <span class="unread-notifications-button">{{unreadNotifications}}</span></q-item-label>
+            <!-- <q-item-label>Mis Notificaciones <span class="unread-notifications-button">{{contadorNotificacionesNoVistas}}</span></q-item-label> -->
+            <!-- <div v-if="allMyNotSeenNotifications > 0"> -->
+            <div v-if="contadorNotificacionesNoVistas > 0">
+              <!-- <q-item-label>Mis Notificaciones <span class="unread-notifications-button">{{allMyNotSeenNotifications}}</span></q-item-label> -->
+              <q-item-label>Mis Notificaciones <span class="unread-notifications-button">{{contadorNotificacionesNoVistas}}</span></q-item-label>
+            </div>
+            <div v-else>
+              <q-item-label>Mis Notificaciones</q-item-label>
+            </div>
             <!-- <q-item-label caption>quasar.dev</q-item-label> -->
           </q-item-section>
         </q-item>
@@ -78,7 +86,18 @@
             <q-icon name="event" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Creación de Notificación</q-item-label>
+            <q-item-label>Envío de Notificación</q-item-label>
+            <!-- <q-item-label caption>quasar.dev</q-item-label> -->
+          </q-item-section>
+        </q-item>
+        </div>
+        <div v-if="role == 'ADMIN'">
+        <q-item v-ripple clickable tag="a" @click="openNotificationStatus()">
+          <q-item-section avatar>
+            <q-icon name="list_alt" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Estado de Notificaciones</q-item-label>
             <!-- <q-item-label caption>quasar.dev</q-item-label> -->
           </q-item-section>
         </q-item>
@@ -110,25 +129,42 @@
         <div class="welcome-text">Hola, {{name}}!</div>
         <div class="welcome-text">{{family_key}}</div>
       </div>
-      <div style="margin-left:10px;margin-top:10px;"><b>Notificaciones no leídas:</b></div>
+      <!-- <div>{{allMyNotSeenNotifications}}</div> -->
+      <div style="margin-left:10px;margin-top:10px;" v-if="allMyNotSeenNotifications.length > 0"><b>Notificaciones no leídas:</b></div>
+      <!--  -->
+      <!-- <div class="single-notification" @click="openSingleNotification()">
+        <div class="notification-type">Disciplina</div>
+        <div class="notification-title">Reporte de conducta de Juan</div>
+        <div v-if="descripcionDeNotificacionDePrueba.length >= 160" class="notification-description-text">{{descripcionDeNotificacionDePrueba.substring(0,160) + "..."}}</div>
+        <div v-else class="notification-description-text">{{descripcionDeNotificacionDePrueba}}</div>
+        <div class="show-more-button">Ver más</div>
+      </div>
       <div class="single-notification" @click="openSingleNotification()">
-          <div class="notification-type">Disciplina</div>
-          <div class="notification-title">Reporte de conducta de Juan</div>
-          <div class="notification-description-text">Estimada familia, te invitamos a que asistas lo más pronto posible a la oficina de disciplina.</div>
-          <div class="show-more-button">Ver más</div>
+        <div class="notification-type">Enfermería</div>
+        <div class="notification-title">Estado de salud de Karla</div>
+        <div class="notification-description-text">Estimada familia, favor de acudir lo más pronto posible por Karla dado su estado de salud.</div>
+        <div class="show-more-button">Ver más</div>
+      </div>
+      <div class="single-notification" @click="openSingleNotification()">
+        <div class="notification-type">Invitaciones</div>
+        <div class="notification-title">¡Felices fiestas patrias!</div>
+        <div class="notification-description-text">Queridas familias, las invitamos al Campus Escobedo a celular el 16 de Septiembre.</div>
+        <div class="show-more-button">Ver más</div>
+      </div> -->
+      <!--  -->
+      <div v-for="singleNotification in allMyNotifications" v-bind:key="singleNotification.id">
+        <!-- Falta esto: \/ -->
+        <!-- @click="openSingleNotification()" -->
+        <div v-if="singleNotification.seen == false">
+          <div class="single-notification" @click="openSingleNotification(singleNotification.id, singleNotification.assist)">
+            <div class="notification-type">{{singleNotification.category}}</div>
+            <div class="notification-title">{{singleNotification.title}}</div>
+            <div v-if="singleNotification.description.length >= 160" class="notification-description-text">{{singleNotification.description.substring(0,160) + "..."}}</div>
+            <div v-else class="notification-description-text">{{singleNotification.description}}</div>
+            <div class="show-more-button">Ver más</div>
+          </div>
         </div>
-        <div class="single-notification" @click="openSingleNotification()">
-          <div class="notification-type">Enfermería</div>
-          <div class="notification-title">Estado de salud de Karla</div>
-          <div class="notification-description-text">Estimada familia, favor de acudir lo más pronto posible por Karla dado su estado de salud.</div>
-          <div class="show-more-button">Ver más</div>
-        </div>
-        <div class="single-notification" @click="openSingleNotification()">
-          <div class="notification-type">Invitaciones</div>
-          <div class="notification-title">¡Felices fiestas patrias!</div>
-          <div class="notification-description-text">Queridas familias, las invitamos al Campus Escobedo a celular el 16 de Septiembre.</div>
-          <div class="show-more-button">Ver más</div>
-        </div>
+      </div>
     </div>
     <div v-if="myInformation" class="my-personal-information-container">
       <!-- <div class="information-container">Nombre: <span class="container-information">{{name}}</span></div> -->
@@ -170,6 +206,7 @@
               <div class="ios-link" @click="testLink('extracurriculares')">Extracurriculares</div>
               <div class="ios-link" @click="testLink('cafeteria')">Menú de Cafetería</div>
               <div class="ios-link" @click="testLink('facturas')">Consulta de Facturas</div>
+              <div class="ios-link" @click="testLink('horarioDeCaja')">Horario de Caja</div>
             </div>
             <div v-else>
               <li><a href="http://oxfordschool.edu.mx/index.aspx?seccion=aulavirtualacceso" target="_blank">Aula Virtual</a></li>
@@ -178,6 +215,7 @@
               <li><a href="http://oxfordschool.edu.mx/index.aspx?seccion=noticias&id=2520" target="_blank">Extracurriculares</a></li>
               <li><a href="http://oxfordschool.edu.mx/index.aspx?seccion=cafeteria" target="_blank">Menú de Cafetería</a></li>
               <li><a href="https://cfd.sicofi.com.mx/Sicofi/Main" target="_blank">Consulta de Facturas</a></li>
+              <li><a href="https://oxfordschool.edu.mx/index.aspx?seccion=noticias&id=2900" target="_blank">Horario de Caja</a></li>
             </div>
           </ul>
         </li>
@@ -208,20 +246,24 @@
       </ul>
     </div>
     <div v-if="myNotifications" class="">
+      <!--
       <div v-if="notificationsLength == 0" class="no-notifications-sign">
         Actualmente no tienes notificaciones
       </div>
       <div v-else class="notificatios-sign">
         Tienes notificaciones, serán desplegadas aquí ↓
       </div>
+      -->
       <div>
-        <div>-------------------------------------------------------------------------------------------------</div>
-        <div style="text-align:center;font-weight:bold;font-style:italic;">Notificaciones de prueba (Solo para demostración)</div>
-        <q-tabs v-model="tab">
-          <q-tab name="leidas" icon="markunread_mailbox" label="Leídas" />
-          <q-tab name="noleidas" icon="notification_important" label="No leídas" />
+        <!-- <div>-------------------------------------------------------------------------------------------------</div> -->
+        <!-- <div style="text-align:center;font-weight:bold;font-style:italic;">Notificaciones de prueba (Solo para demostración)</div> -->
+        <q-tabs v-model="notificationsTab">
+          <q-tab name="noleidas" icon="notification_important" label="No leídas" no-caps/>
+          <q-tab name="leidas" icon="markunread_mailbox" label="Leídas" no-caps/>
         </q-tabs>
+        <!-- {{notificationsTab}} -->
         <!-- En el futuro hacer el binding y pasar el id de la notificaction a la funcion -->
+        <!--
         <div class="single-notification" @click="openSingleNotification()">
           <div class="notification-type">Disciplina</div>
           <div class="notification-title">Reporte de conducta de Juan</div>
@@ -240,17 +282,65 @@
           <div class="notification-description-text">Queridas familias, las invitamos al Campus Escobedo a celular el 16 de Septiembre.</div>
           <div class="show-more-button">Ver más</div>
         </div>
+        -->
+        <!-- contadorNotificacionesNoVistas
+        contadorNotificacionesVistas -->
+        <div v-if="notificationsTab == 'noleidas'" class="notifications-board">
+          <!-- No Leídas -->
+          <!-- {{contadorNotificacionesNoVistas}} -->
+          <div v-if="contadorNotificacionesNoVistas == 0" style="text-align:center;">
+            <b>No tienes notificaciones por leer</b>
+          </div>
+          <div v-else-if="contadorNotificacionesNoVistas > 0">
+            <div v-for="singleNotification in allMyNotifications" v-bind:key="singleNotification.id">
+              <!-- Falta esto: \/ -->
+              <!-- @click="openSingleNotification()" -->
+              <div v-if="singleNotification.seen == false">
+                <!-- Falta esto: @click="openSingleNotification()" -->
+                <div class="single-notification" @click="openSingleNotification(singleNotification.id, singleNotification.assist)">
+                  <div class="notification-type">{{singleNotification.category}}</div>
+                  <div class="notification-title">{{singleNotification.title}}</div>
+                  <div v-if="singleNotification.description.length >= 160" class="notification-description-text">{{singleNotification.description.substring(0,160) + "..."}}</div>
+                  <div v-else class="notification-description-text">{{singleNotification.description}}</div>
+                  <div class="show-more-button">Ver más</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="notificationsTab == 'leidas'" class="notifications-board">
+          <!-- Leídas -->
+          <!-- {{contadorNotificacionesVistas}} -->
+          <div v-if="contadorNotificacionesVistas == 0" style="text-align:center;">
+            <b>Sin historial de notificaciones leídas</b>
+          </div>
+          <div v-else-if="contadorNotificacionesVistas > 0">
+            <div v-for="singleNotification in allMyNotifications" v-bind:key="singleNotification.id">
+              <!-- Falta esto: \/ -->
+              <!-- @click="openSingleNotification()" -->
+              <div v-if="singleNotification.seen == true">
+                <!-- Falta esto: @click="openSingleNotification()" -->
+                <div class="single-notification" @click="openSingleNotification(singleNotification.id, singleNotification.assist)">
+                  <div class="notification-type">{{singleNotification.category}}</div>
+                  <div class="notification-title">{{singleNotification.title}}</div>
+                  <div v-if="singleNotification.description.length >= 160" class="notification-description-text">{{singleNotification.description.substring(0,160) + "..."}}</div>
+                  <div v-else class="notification-description-text">{{singleNotification.description}}</div>
+                  <div class="show-more-button">Ver más</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div v-if="myNotificationComponent" class="">
-      <div class="single-notification-dummy-board">Notificación solo para demostración</div>
-      <div class="one-single-notification">
+      <!-- <div class="single-notification-dummy-board">Notificación solo para demostración</div> -->
+      <!-- {{singleNotificationID}} -->
+      <!-- <div class="one-single-notification">
         <div class="o-s-n-title">Estado de salud de Juan</div>
         <div class="o-s-n-type">Enfermería</div>
         <div class="o-s-n-description">Estimada familia, te pedimos acudir lo más pronto posible a la sala de consultas del campus dado que su hijo Juan no se siente de lo mejor posible.</div>
         <div class="o-s-n-date">Fecha de notificación: <b>18/09/2019</b></div>
-        <!-- role -->
-        <!-- relationship -->
         <div class="o-s-n-first-row">
           <div class="o-s-n-first-row-value-1">Campus Escobedo</div>
           <div class="o-s-n-first-row-value-2">Grado 10</div>
@@ -260,103 +350,285 @@
           <div class="o-s-n-family-key">Familia C1Z3</div>
           <div class="o-s-n-kid-name">Juan Pedro López Ramírez</div>
         </div>
-        <!-- Cuando se abra llamar a la función mounted para cambiar el estado a leído -->
-        <!-- status -->
-        <!-- Este será un botón para hacer el update -->
         <div class="assistance-and-status-div">
           <div class="o-s-n-assistance">Estado: <b>{{assistanceStatus}}</b></div>
           <div class="button-div"><q-btn color="primary" label="Asistiré" no-caps @click="changeStatus()"/></div>
           <div style="font-size:10px;color:red;text-align:center;padding-top:10px;">Este botón solo aparecerá para las notificaciones que sean <b>Citas</b> o <b>Invitaciones</b>.</div>
+        </div>
+      </div> -->
+      <div class="one-single-notification">
+        <div class="o-s-n-type">{{allMyNotifications[singleNotificationID-1].category}}</div>
+        <div class="o-s-n-title">{{allMyNotifications[singleNotificationID-1].title}}</div>
+        <div class="o-s-n-description">{{allMyNotifications[singleNotificationID-1].description}}</div>
+        <div class="o-s-n-date">Fecha de notificación: <b>{{allMyNotifications[singleNotificationID-1].publication_date.substring(0,10)}}</b></div>
+        <!-- role -->
+        <!-- relationship -->
+        <div class="o-s-n-first-row">
+          <div v-if="allMyNotifications[singleNotificationID-1].campus != null" class="o-s-n-first-row-value-1">Campus {{allMyNotifications[singleNotificationID-1].campus}}</div>
+          <div v-else class="o-s-n-first-row-value-1">Campus: No</div>
+          <div v-if="allMyNotifications[singleNotificationID-1].grade != ''" class="o-s-n-first-row-value-2">Grado {{allMyNotifications[singleNotificationID-1].grade}}</div>
+          <div v-else class="o-s-n-first-row-value-2">Grado: No</div>
+          <div v-if="allMyNotifications[singleNotificationID-1].group != ''" class="o-s-n-first-row-value-3">Grupo {{allMyNotifications[singleNotificationID-1].group}}</div>
+          <div v-else class="o-s-n-first-row-value-3">Grupo: No</div>
+        </div>
+        <div>
+          <div v-if="allMyNotifications[singleNotificationID-1].family_key != null" class="o-s-n-family-key">Familia {{allMyNotifications[singleNotificationID-1].family_key}}</div>
+          <div v-else class="o-s-n-family-key">Familia: Sin clave</div>
+          <div v-if="allMyNotifications[singleNotificationID-1].student_name != null" class="o-s-n-kid-name">{{allMyNotifications[singleNotificationID-1].student_name}}</div>
+          <div v-else class="o-s-n-kid-name">Sin estudiante</div>
+        </div>
+        <!-- Cuando se abra llamar a la función mounted para cambiar el estado a leído -->
+        <!-- status -->
+        <!-- Este será un botón para hacer el update -->
+        <div class="assistance-and-status-div" v-if="allMyNotifications[singleNotificationID-1].assist == false && (allMyNotifications[singleNotificationID-1].category == 'Citas' || allMyNotifications[singleNotificationID-1].category == 'Invitaciones')">
+          <div class="o-s-n-assistance">Estado: <b>No asistiré</b></div>
+          <div class="button-div"><q-btn color="primary" label="Asistiré" no-caps @click="changeStatus(allMyNotifications[singleNotificationID-1].id, allMyNotifications[singleNotificationID-1].assist, allMyNotifications[singleNotificationID-1].seen)"/></div>
+          <!-- <div style="font-size:10px;color:red;text-align:center;padding-top:10px;">Este botón solo aparecerá para las notificaciones que sean <b>Citas</b> o <b>Invitaciones</b>.</div> -->
+        </div>
+        <div class="assistance-and-status-div" v-if="allMyNotifications[singleNotificationID-1].assist == true && (allMyNotifications[singleNotificationID-1].category == 'Citas' || allMyNotifications[singleNotificationID-1].category == 'Invitaciones')">
+          <div class="o-s-n-assistance">Estado: <b>Asistiré</b></div>
+          <div class="button-div"><q-btn color="primary" label="No asistiré" no-caps @click="changeStatus(allMyNotifications[singleNotificationID-1].id, allMyNotifications[singleNotificationID-1].assist, allMyNotifications[singleNotificationID-1].seen)"/></div>
+          <!-- <div style="font-size:10px;color:red;text-align:center;padding-top:10px;">Este botón solo aparecerá para las notificaciones que sean <b>Citas</b> o <b>Invitaciones</b>.</div> -->
         </div>
         <!-- event_id -->
       </div>
     </div>
     <div v-if="myNotificationCreation" class="">
       <div class="notification-creation-form">
-        <!-- Componente para la creación de notificaciones.<br> -->
-        <div>Información requerida para la creación de la notificación:</div>
-        <q-tabs v-model="tab">
-          <q-tab name="padres" icon="people" label="Padres" />
-          <q-tab name="plantel" icon="school" label="Plantel" />
-          <q-tab name="administradores" icon="person" label="Admins" />
-        </q-tabs>
-        <div>{{tab}}</div>
-        <!-- Título de la notificación<br> -->
-        <q-select v-model="tipoDeNotificacion" :options="notificaciones" label="Elige un el tipo de notificación" v-if="tab === 'administradores'"/><br>
-        <!-- Título de la notificación<br> -->
-        <q-input outlined label="Título de la notificación" v-if="tab === 'padres' || tab === 'plantel' || tab === 'administradores'"/><br>
-        <!-- Descripción de la notificación<br> -->
-        <!-- <q-input outlined label="Descripción de la notificación" /><br> -->
-        <textarea class="notification-description" rows="5" placeholder="Descripción de la notificación"  v-if="tab === 'padres' || tab === 'plantel' || tab === 'administradores'"></textarea>
-        <!-- Campus<br> -->
-        <q-select v-model="campus" :options="campuses" label="Elige un campus"  v-if="tab === 'plantel' || tab === 'administradores'"/>
-        <!-- Fecha de publicación<br> -->
-        <br><br>
-        <div class="date-picker-button-and-date-value" v-if="tab === 'padres' || tab === 'plantel' || tab === 'administradores'">
-          <div v-if="tipoDeNotificacion === 'Citas' || tipoDeNotificacion === 'Comunicados' || tipoDeNotificacion === 'Encuestas' || tipoDeNotificacion === 'Invitaciones' || tipoDeNotificacion === 'Nursery' || tipoDeNotificacion === 'Recordatorios'" class="just-date-picker"><q-btn round color="primary" icon="date_range" @click="showDatePickerFunction()"/></div>
-          <div class="just-date-value">Fecha seleccionada: <b>{{date}}</b></div>
+        <div v-if="confirmationModal == true">
+          <div v-if="confirmationPrimaryButtons">
+            <div><b>¿Seguro que deseas enviar esta notificación?</b></div>
+            <div style="width:50%;display:inline-block;"><q-btn color="red" label="Cancelar" no-caps @click="cancelConfirmationModal()"/></div>
+            <div style="width:50%;display:inline-block;"><q-btn color="green" label="Enviar" no-caps @click="createNotification()"/></div>
+          </div>
+          <div v-else-if="confirmationSecondaryButtons">
+            <div style="text-align:center;"><b>La notificación se ha envíado.</b></div>
+            <div style="width:50%;display:inline-block;"><q-btn color="primary" label="Cerrar" no-caps @click="cancelConfirmationModal()"/></div>
+          </div>
         </div>
-        <br>
-        <div v-if="showDatePicker">
-          <q-date v-model="date" minimal/><br>
-        </div>
-        <!-- Alcance de entrega de la notificación<br> -->
-        <!-- Más opciones de personalización -->
-        <!-- <q-checkbox v-model="morePersonalization" /> Más opciones de personalización<br> -->
-        <!-- <div class="notification-personalization" v-if="morePersonalization"> -->
-        <!-- Padre(s) - Administrador(es)<br> -->
-        <!-- <div>{{tab}}</div> -->
-        <!--
-          Relación [Padre - Madre - Ambos]<br>
-          <q-tabs v-model="tab2">
-            <q-tab name="madre" icon="person" label="Madre" />
-            <q-tab name="padre" icon="person" label="Padre" />
-            <q-tab name="ambos" icon="people" label="Ambos" />
+        <div v-else-if="confirmationModal == false">
+          <!-- Componente para el envío de notificaciones.<br> -->
+          <div>Información requerida para el envío de la notificación:</div>
+          <q-tabs v-model="tab">
+            <q-tab name="padres" icon="people" label="Familia" no-caps/>
+            <!-- <q-tab name="plantel" icon="school" label="Plantel" no-caps disable/> -->
+            <q-tab name="administradores" icon="school" label="Plantel" no-caps/>
           </q-tabs>
-        -->
-        <!-- Campus<br> -->
-        <!-- <q-select v-model="campusInterno" :options="campuses" label="Elige un campus" /> -->
-        <!-- Grado<br> -->
-        <div v-if="tab === 'plantel' || tab === 'administradores'">
-          <div v-if="campus === 'Anáhuac' || campus === 'Concordia'">
-            <q-select v-model="grado" :options="grados2" label="Elige un grado" />
+          <!-- <div>{{tab}}</div> -->
+          <!-- Tipo de notificación<br> -->
+          <q-select v-model="tipoDeNotificacion" :options="notificaciones" label="Tipo de notificación" v-if="tab === 'padres' || tab === 'administradores'"/><br>
+          <!-- Asunto de la notificación<br> -->
+          <q-input v-model="tituloDeLaNotificacion" outlined label="Asunto de la notificación" v-if="tab === 'padres' || tab === 'plantel' || tab === 'administradores'"/><br>
+          <!-- Descripción de la notificación<br> -->
+          <!-- <q-input outlined label="Descripción de la notificación" /><br> -->
+          <textarea v-model="descripcionDeLaNotificacion" class="notification-description" rows="5" placeholder="Descripción de la notificación"  v-if="tab === 'padres' || tab === 'plantel' || tab === 'administradores'"></textarea>
+          <!-- Fecha de publicación<br> -->
+          <div class="date-picker-button-and-date-value" v-if="tab === 'padres' || tab === 'plantel' || tab === 'administradores'">
+            <div v-if="tipoDeNotificacion === 'Citas' || tipoDeNotificacion === 'Comunicados' || tipoDeNotificacion === 'Encuestas' || tipoDeNotificacion === 'Invitaciones' || tipoDeNotificacion === 'Nursery' || tipoDeNotificacion === 'Recordatorios'" class="just-date-picker">
+              <q-btn round color="primary" icon="date_range" @click="showDatePickerFunction()"/>
+            </div>
+            <div class="just-date-value">Fecha seleccionada: <b>{{date}}</b></div>
           </div>
-          <div v-else-if="campus === 'Barragán' || campus === 'Sendero'">
-            <q-select v-model="grado" :options="grados3" label="Elige un grado" />
+          <div v-if="showDatePicker && (tipoDeNotificacion === 'Citas' || tipoDeNotificacion === 'Comunicados' || tipoDeNotificacion === 'Encuestas' || tipoDeNotificacion === 'Invitaciones' || tipoDeNotificacion === 'Nursery' || tipoDeNotificacion === 'Recordatorios')">
+            <q-date v-model="date" minimal/><br>
           </div>
-          <div v-else-if="campus === 'Prepa'">
-            <q-select v-model="grado" :options="grados4" label="Elige un grado" />
+          <br>
+          <!-- Campus<br> -->
+          <q-select filled multiple v-model="campus" :options="campuses" label="Campus(es)"  v-if="tab === 'plantel' || tab === 'administradores'"/>
+          <br>
+          <!-- Alcance de entrega de la notificación<br> -->
+          <!-- Más opciones de personalización -->
+          <!-- <q-checkbox v-model="morePersonalization" /> Más opciones de personalización<br> -->
+          <!-- <div class="notification-personalization" v-if="morePersonalization"> -->
+          <!-- Padre(s) - Administrador(es)<br> -->
+          <!-- <div>{{tab}}</div> -->
+          <!--
+            Relación [Padre - Madre - Ambos]<br>
+            <q-tabs v-model="tab2">
+              <q-tab name="madre" icon="person" label="Madre" />
+              <q-tab name="padre" icon="person" label="Padre" />
+              <q-tab name="ambos" icon="people" label="Ambos" />
+            </q-tabs>
+          -->
+          <!-- Campus<br> -->
+          <!-- <q-select v-model="campusInterno" :options="campuses" label="Elige un campus" /> -->
+          <!-- Grado<br> -->
+          <div v-if="tab === 'plantel' || tab === 'administradores'">
+            <div v-if="campus === 'Anáhuac' || campus === 'Concordia'">
+              <q-select filled multiple v-model="grado" :options="grados2" label="Grado(s)" />
+            </div>
+            <div v-else-if="campus === 'Barragán' || campus === 'Sendero'">
+              <q-select filled multiple v-model="grado" :options="grados3" label="Grado(s)" />
+            </div>
+            <div v-else-if="campus === 'Prepa'">
+              <q-select filled multiple v-model="grado" :options="grados4" label="Grado(s)" />
+            </div>
+            <div v-else>
+              <q-select filled multiple v-model="grado" :options="grados" label="Grado(s)" />
+            </div>
           </div>
-          <div v-else>
-            <q-select v-model="grado" :options="grados" label="Elige un grado" />
+          <!-- Grupo<br> -->
+          <!-- <q-select v-model="grupo" :options="grupos" label="Elige un grupo"  v-if="tab === 'plantel'"/> -->
+          <br>
+          <q-select filled multiple v-model="grupo" :options="grupos" label="Grupo(s)"  v-if="tab === 'administradores'"/>
+          <!-- Código de Familia<br> -->
+          <br>
+          <!-- <q-input v-model="familyKeyFormValue" outlined label="Ingresa la clave de familia"  v-if="tab === 'padres'"/><br> -->
+          <!-- <q-select
+            filled
+            v-model="model"
+            use-input
+            hide-selected
+            fill-input
+            input-debounce="0"
+            :options="options"
+            @filter="filterFn"
+            hint="Basic autocomplete"
+            style="width: 250px; padding-bottom: 32px"
+          >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-grey">
+                  No results
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select> -->
+          <!--  -->
+          <div v-if="tab === 'padres'">
+            <div>Clave de Familia:</div>
+            <div class="select-and-autocomplete-familykey">
+              <q-select
+                filled
+                v-model="familyKeyFormValue"
+                use-input
+                hide-selected
+                fill-input
+                input-debounce="0"
+                :options="allFamilyKeysNotFiltered"
+                @filter="filterFn"
+                style="width: 250px;"
+                class="a-fk-element-e1"
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+              <q-btn @click="searchKidsOfFamilyKeySelected()" round color="primary" icon="search" class="a-fk-element-e2"/>
+            </div>
+            <div v-if="notSelectedFamilyKey" style="color:red;">Por favor selecciona una clave de familia</div>
+            <div v-if="searchedKidsByFamilyKey.length > 0" class="allowed-kids-to-select-sign">Hijos disponibles para seleccionar</div>
+            <div v-for="kid in searchedKidsByFamilyKey" v-bind:key="kid.id">
+                <div class="kid-from-family-key-searched" @click="addRemoveFamilyKid(kid.full_name)">{{kid.full_name}} - {{kid.grade}} - {{kid.group}}</div>
+            </div>
+            <div class="selected-kids-section">
+              <div class="counter-kids">Hijos seleccionados: <b>{{studentNamesToSend.length}}</b></div>
+              <div v-for=" kidName in studentNamesToSend" v-bind:key="kidName.id">
+                <div>{{kidName}}</div>
+              </div>
+            </div>
           </div>
+          <!-- {{familyKeyFormValue}} -->
+          <!--  -->
+          <!-- Matrícula<br> -->
+          <!-- <q-input v-model="matriculaFormValue" outlined label="Ingresa la matrícula" /><br> -->
+          <!-- Nombre del estudiante<br> -->
+          <!-- <q-input v-model="studentNameFormValue" outlined label="Ingresa el nombre de el o la estudiante" /> -->
+          <div class="container-for-creating-notification-button">
+            <div v-for="error in createNotificationErrors" v-bind:key="error.id" class="notifications-errors-container">
+              <div class="individual-notification-error">{{error}}</div>
+            </div>
+            <!-- <q-btn color="primary" label="Enviar Notificación" no-caps @click="createNotification()"/> -->
+            <q-btn color="primary" label="Enviar Notificación" no-caps @click="openConfirmationModal()"/>
+          </div>
+          <!-- </div> -->
+      </div>
+      </div>
+    </div>
+    <div v-if="notificationStatus" class="notification-search-modal">
+      <!-- Este es el componente para el estado de las notificaciones -->
+      <!-- Botón de busqueda de notificación -->
+      <div v-if="formaDeBusquedaDeLaNotificacion">
+        <q-btn color="primary" class="full-width q-mt-md" label="Buscar notificación/notificaciones" @click="searchNotifications()" no-caps/><br>
+        <!-- Tipo de notificación -->
+        <div style="font-weight:bold;margin-top:10px;margin-bottom:5px;text-align:center;">Criterios para la búsqueda de la notificación:</div>
+        <q-select v-model="tipoDeNotificacionBusqueda" :options="notificacionesBusqueda" label="Tipo de notificación"/><br>
+        <!-- Asunto de la notificación -->
+        <q-input v-model="tituloDeLaNotificacionBusqueda" outlined label="Asunto de la notificación"/><br>
+        <!-- Descripción de la notificación -->
+        <textarea v-model="descripcionDeLaNotificacionBusqueda" class="notification-description" rows="5" placeholder="Descripción de la notificación"></textarea><br><br>
+        <!-- Fecha de la notificación -->
+        <div style="text-align:center;">
+          <q-date v-model="dateForNotificationSearch" minimal/><br><br>
         </div>
-        <!-- Grupo<br> -->
-        <q-select v-model="grupo" :options="grupos" label="Elige un grupo"  v-if="tab === 'plantel'"/>
-        <!-- Código de Familia<br> -->
-        <br>
-        <q-input v-model="familyKeyFormValue" outlined label="Ingresa la clave de familia"  v-if="tab === 'padres'"/><br>
-        <!-- Matrícula<br> -->
-        <!-- <q-input v-model="matriculaFormValue" outlined label="Ingresa la matrícula" /><br> -->
-        <!-- Nombre del estudiante<br> -->
-        <!-- <q-input v-model="studentNameFormValue" outlined label="Ingresa el nombre de el o la estudiante" /> -->
-        <div class="container-for-creating-notification-button">
-          <q-btn color="primary" label="Crear Notificación" no-caps @click="createNotification()"/>
-          <div v-for="error in createNotificationErrors" v-bind:key="error.id" class="notifications-errors-container">
-            <div class="individual-notification-error">{{error}}</div>
-          </div>
+        <!-- Clave de Familia -->
+        <q-input v-model="familyKeyForNotificationSearch" outlined label="Clave de Familia"/><br>
+        <!-- Selección de hijos -->
+        <!-- Queda pendiente -->
+        <!-- Campus -->
+        <q-select filled multiple v-model="campusBusqueda" :options="campusesBusqueda" label="Campus(es)" /><br>
+        <!-- Grado -->
+        <q-select filled multiple v-model="gradoBusqueda" :options="gradosBusqueda" label="Grado(s)" /><br>
+        <!-- Grupo -->
+        <q-select filled multiple v-model="grupoBusqueda" :options="gruposBusqueda" label="Grupo(s)" />
+      </div>
+      <div v-if="resultadosDeLaBusqueda">
+        <q-btn color="primary" class="full-width q-mt-md" label="Regresar a la búsqueda de notificaciones" @click="getBackToNotificationsSearch()" no-caps/><br>
+        <div class="single-notification" @click="openSingleNotificationFromSearchBar()">
+          <div class="notification-type">Disciplina</div>
+          <div class="notification-title">Reporte de conducta de Juan</div>
+          <div v-if="descripcionDeNotificacionDePrueba.length >= 160" class="notification-description-text">{{descripcionDeNotificacionDePrueba.substring(0,160) + "..."}}</div>
+          <div v-else class="notification-description-text">{{descripcionDeNotificacionDePrueba}}</div>
+          <div class="show-more-button">Ver más</div>
         </div>
-        <!-- </div> -->
+        <div class="single-notification" @click="openSingleNotificationFromSearchBar()">
+          <div class="notification-type">Enfermería</div>
+          <div class="notification-title">Estado de salud de Karla</div>
+          <div class="notification-description-text">Estimada familia, favor de acudir lo más pronto posible por Karla dado su estado de salud.</div>
+          <div class="show-more-button">Ver más</div>
+        </div>
+        <div class="single-notification" @click="openSingleNotificationFromSearchBar()">
+          <div class="notification-type">Invitaciones</div>
+          <div class="notification-title">¡Felices fiestas patrias!</div>
+          <div class="notification-description-text">Queridas familias, las invitamos al Campus Escobedo a celular el 16 de Septiembre.</div>
+          <div class="show-more-button">Ver más</div>
+        </div>
+      </div>
+      <div v-if="notificacionDeLaBusqueda">
+        <q-btn color="primary" class="full-width q-mt-md" label="Regresar a las notificaciones encontradas" @click="getBackToNotificationsResults()" no-caps/><br>
+        <div class="o-s-n-title">Estado de salud de Juan</div>
+        <div class="o-s-n-type">Enfermería</div>
+        <div class="o-s-n-description">Estimada familia, te pedimos acudir lo más pronto posible a la sala de consultas del campus dado que su hijo Juan no se siente de lo mejor posible.</div>
+        <div class="o-s-n-date">Fecha de notificación: <b>18/09/2019</b></div>
+        <div class="o-s-n-first-row">
+          <div class="o-s-n-first-row-value-1">Campus Escobedo</div>
+          <div class="o-s-n-first-row-value-2">Grado 10</div>
+          <div class="o-s-n-first-row-value-3">Grupo A</div>
+        </div>
+        <div>
+          <div class="o-s-n-family-key">Familia C1Z3</div>
+          <div class="o-s-n-kid-name">Juan Pedro López Ramírez</div>
+        </div>
+        <div class="assistance-and-status-div">
+          <div class="o-s-n-assistance">Estado: <b>{{assistanceStatus}}</b></div>
+          <div class="button-div"><q-btn color="primary" label="Asistiré" no-caps /></div>
+          <div style="font-size:10px;color:red;text-align:center;padding-top:10px;">Este botón solo aparecerá para las notificaciones que sean <b>Citas</b> o <b>Invitaciones</b>.</div>
+        </div>
       </div>
     </div>
   </q-page>
 </template>
 
 <script>
-import { openURL } from 'quasar'
+import { openURL, date } from 'quasar'
 import axios from 'axios'
 // import { ENGINE_METHOD_DSA } from 'constants'
 // import { TIMEOUT } from 'dns'
+// import { ui, filter } from 'quasar'
 export default {
   name: 'PageHome',
   data () {
@@ -376,13 +648,17 @@ export default {
       inicio: true,
       welcomeInformation: false,
       kids: [],
-      date: '2019/02/01',
+      // date: '2019/02/01',
+      // date: date.formatDate(Date.now(), 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
+      // date: date.formatDate(Date.now(), 'YYYY/MM/DD'),
+      date: date.formatDate(Date.now(), 'YYYY/MM/DD'),
       campus: null,
       campuses: ['Todos los campus', 'Anáhuac', 'Barragán', 'Concordia', 'Sendero', 'Prepa'],
       tab: 'padres',
       tab2: 'madre',
+      notificationsTab: 'noleidas',
       campusInterno: null,
-      grado: null,
+      grado: [],
       grados: [
         'Todos los grados',
         // 'Todo kinder',
@@ -435,11 +711,11 @@ export default {
         '11º Preparatoria',
         '12º Preparatoria'
       ],
-      grupo: null,
+      grupo: [],
       grupos: ['A', 'B', 'C', 'D', 'E', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Otro'],
       morePersonalization: false,
       showDatePicker: false,
-      tipoDeNotificacion: 'Comunicados',
+      tipoDeNotificacion: '',
       notificaciones: ['Citas', 'Comunicados', 'Disciplina', 'Enfermería', 'Encuestas', 'Invitaciones', 'Nursery', 'Recordatorios'],
       notificationsLength: 0,
       myNotificationComponent: false,
@@ -448,7 +724,67 @@ export default {
       createNotificationErrors: [],
       familyKeyFormValue: '',
       matriculaFormValue: '',
-      studentNameFormValue: ''
+      studentNameFormValue: '',
+      tituloDeLaNotificacion: '',
+      contadorNotificacionesNoVistas: 0,
+      contadorNotificacionesVistas: 0,
+      descripcionDeNotificacionDePrueba: 'Estimada familia, te invitamos a que asistas lo más pronto posible a la oficina de disciplina.',
+      allFamilyKeys: [],
+      allFamilyKeysNotFiltered: [],
+      notSelectedFamilyKey: false,
+      searchedKidsByFamilyKey: [],
+      descripcionDeLaNotificacion: '',
+      familyKeysInArray: [],
+      roleToSend: '',
+      notification: {},
+      allMyNotifications: [],
+      allMySeenNotifications: 0,
+      allMyNotSeenNotifications: 0,
+      singleNotificationID: null,
+      confirmationModal: false,
+      confirmationPrimaryButtons: true,
+      confirmationSecondaryButtons: false,
+      studentNamesToSend: [],
+      notificationStatus: false,
+      // Variables para la búsqueda de una notificación
+      tipoDeNotificacionBusqueda: '',
+      notificacionesBusqueda: ['Citas', 'Comunicados', 'Disciplina', 'Enfermería', 'Encuestas', 'Invitaciones', 'Nursery', 'Recordatorios'],
+      tituloDeLaNotificacionBusqueda: '',
+      descripcionDeLaNotificacionBusqueda: '',
+      dateForNotificationSearch: date.formatDate(Date.now(), 'YYYY/MM/DD'),
+      familyKeyForNotificationSearch: '',
+      campusBusqueda: null,
+      campusesBusqueda: ['Todos los campus', 'Anáhuac', 'Barragán', 'Concordia', 'Sendero', 'Prepa'],
+      gradoBusqueda: [],
+      gradosBusqueda: [
+        'Todos los grados',
+        // 'Todo kinder',
+        // 'Todo primaria',
+        // 'Todo secundaria',
+        // 'Todo preparatoria',
+        'Nursery',
+        'PreKínder',
+        '1º Kínder',
+        '2º Kínder',
+        '3º Kínder',
+        '1º Primaria',
+        '2º Primaria',
+        '3º Primaria',
+        '4º Primaria',
+        '5º Primaria',
+        '6º Primaria',
+        '7º Secundaria',
+        '8º Secundaria',
+        '9º Secundaria',
+        '10º Preparatoria',
+        '11º Preparatoria',
+        '12º Preparatoria'
+      ],
+      grupoBusqueda: [],
+      gruposBusqueda: ['A', 'B', 'C', 'D', 'E', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Otro'],
+      formaDeBusquedaDeLaNotificacion: true,
+      resultadosDeLaBusqueda: false,
+      notificacionDeLaBusqueda: false
     }
   },
   mounted () {
@@ -457,6 +793,9 @@ export default {
     // this.getKidsByFamilyID()
     this.loginVerification()
     this.getMyNotifications()
+    this.getNotificationCountersByUserID()
+    this.getAllFamilyKeys()
+    // this.functionForTesting()
   },
   methods: {
     openURL,
@@ -477,18 +816,365 @@ export default {
         // Do nothing
       }
     },
+    searchNotifications () {
+      var self = this
+      self.formaDeBusquedaDeLaNotificacion = false
+      self.resultadosDeLaBusqueda = true
+      self.notificacionDeLaBusqueda = false
+    },
+    openSingleNotificationFromSearchBar () {
+      var self = this
+      self.formaDeBusquedaDeLaNotificacion = false
+      self.resultadosDeLaBusqueda = false
+      self.notificacionDeLaBusqueda = true
+    },
+    getBackToNotificationsResults () {
+      var self = this
+      self.formaDeBusquedaDeLaNotificacion = false
+      self.resultadosDeLaBusqueda = true
+      self.notificacionDeLaBusqueda = false
+    },
+    getBackToNotificationsSearch () {
+      var self = this
+      self.formaDeBusquedaDeLaNotificacion = true
+      self.resultadosDeLaBusqueda = false
+      self.notificacionDeLaBusqueda = false
+    },
+    cancelConfirmationModal () {
+      var self = this
+      self.confirmationModal = false
+      self.confirmationPrimaryButtons = true
+      self.confirmationSecondaryButtons = false
+    },
+    openConfirmationModal () {
+      var self = this
+      self.confirmationModal = true
+    },
+    functionForTesting () {
+      // var self = this
+      console.log(window.localStorage.getItem('token'))
+      console.log('------------------------------------')
+      console.log('Función para pruebas')
+      // var completeUrl = 'https://oxford-app-api.herokuapp.com/v1/notifications/update_notification/1'
+      axios.post('https://oxford-app-api.herokuapp.com/v1/notifications/update_notification/1', {
+        // Parámetros
+        notification: {
+          assist: true,
+          seen: true
+        }
+      },
+      { headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token'), 'Content-Type': 'application/json' } })
+        .then(function (response) {
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      console.log('------------------------------------')
+    },
     createNotification () {
       var self = this
+      console.log(self.familyKeyFormValue === '')
+      /**/
+      // self.date = date.formatDate(new Date(self.date(), self.date(), self.date()), 'YYYY/MM/DD')
+      console.log('Antes: ' + self.date)
+      /*
+      var temporaryDate = self.date
+      if (self.tipoDeNotificacion === 'Disciplina' || self.tipoDeNotificacion === 'Enfermería') {
+        console.log('Entré')
+        // temporaryDate = date.formatDate(Date.now(), 'DD/MM/YYYY')
+        temporaryDate = date.formatDate(Date.now(), 'DD/MM/YYYY')
+      } else {
+        // temporaryDate = date.formatDate(temporaryDate, 'DD/MM/YYYY')
+        temporaryDate = date.formatDate(self.date, 'DD/MM/YYYY')
+      }
+      self.date = temporaryDate
+      */
+      if (self.tipoDeNotificacion === 'Disciplina' || self.tipoDeNotificacion === 'Enfermería') {
+        self.date = date.formatDate(Date.now(), 'YYYY/MM/DD')
+      }
+      // self.date = date.formatDate(self.date, 'DD/MM/YYYY')
+      console.log('Después: ' + self.date)
+      /**/
       self.createNotificationErrors = []
+      // var token = window.localStorage.getItem('token')
+      // console.log(token)
+      // var completeUrl = 'https://oxford-app-api.herokuapp.com/v1/notifications'
+      /*
       if (self.tipoDeNotificacion === 'Enfermería' || self.tipoDeNotificacion === 'Disciplina' || self.tipoDeNotificacion === 'Citas') {
         if (self.studentNameFormValue === '') {
           self.createNotificationErrors.push('Para este tipo de notificación se tiene que seleccionar el nombre de un estudiante.')
           // La notificación no se podría realizar
         }
       }
+      */
+      // console.log('Entré')
+      if (self.tab === 'padres') {
+        // console.log('Entré 2')
+        /*
+          Asunto
+          Descripción
+          Fecha
+          Clave de Familia
+          <----->
+          -> La fecha tiene que ser el día de hoy
+          tituloDeLaNotificacion
+          descripcionDeLaNotificacion
+          date
+          familyKeyFormValue
+        */
+        self.familyKeysInArray = []
+        self.familyKeysInArray.push(self.familyKeyFormValue)
+        if ((self.tituloDeLaNotificacion !== '') && (self.descripcionDeLaNotificacion !== '') && (self.familyKeyFormValue !== '') && (self.tipoDeNotificacion !== '')) {
+          // console.log('Se enviará la información de la notificación')
+          // console.log('Entré 3')
+          var roleToSend = ''
+          // console.log(self.tab)
+          if (self.tab === 'padres') {
+            // console.log('-1')
+            roleToSend = 'PARENT'
+            // self.roleToSend = 'ADMIN'
+          } else if (self.tab === 'administradores') {
+            // console.log('-2')
+            roleToSend = 'ADMIN'
+            // self.roleToSend = 'PARENT'
+          } else {
+            // console.log('No entré')
+          }
+          self.notification = {
+            category: self.tipoDeNotificacion,
+            title: self.tituloDeLaNotificacion,
+            description: self.descripcionDeLaNotificacion,
+            publication_date: date.formatDate(self.date, 'DD/MM/YYYY'),
+            role: roleToSend,
+            family_keys: self.familyKeysInArray,
+            student_names: self.studentNamesToSend
+          }
+          console.log(self.notification)
+          // var completeUrl = 'https://oxford-app-api.herokuapp.com/v1/notifications/'
+          /*
+          axios.get(completeUrl, {
+            headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token'), 'Content-Type': 'application/json' },
+            notification: self.notificacion
+          })
+            .then(function (response) {
+              self.confirmationPrimaryButtons = false
+              self.confirmationSecondaryButtons = true
+              console.log(response)
+              // -----
+              // self.tipoDeNotificacion = ''
+              // self.tituloDeLaNotificacion = ''
+              // self.descripcionDeLaNotificacion,
+              // publication_date: date.formatDate(self.date, 'DD/MM/YYYY'),
+              // self.date = date.formatDate(Date.now(), 'YYYY/MM/DD')
+              // role: roleToSend,
+              // family_keys: self.familyKeysInArray
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+            */
+          axios.post('https://oxford-app-api.herokuapp.com/v1/notifications/', {
+            notification: self.notification
+          },
+          { headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token'), 'Content-Type': 'application/json' } })
+            .then(function (response) {
+              self.confirmationPrimaryButtons = false
+              self.confirmationSecondaryButtons = true
+              console.log(response)
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+        }
+        if (self.tituloDeLaNotificacion === '') {
+          self.createNotificationErrors.push('Se debe escribir el asunto de la notificación')
+          // console.log('Entré 4')
+          self.confirmationModal = false
+        }
+        if (self.descripcionDeLaNotificacion === '') {
+          self.createNotificationErrors.push('Se debe de escribir la descripción de la notificación')
+          // console.log('Entré 5')
+          self.confirmationModal = false
+        }
+        if (self.familyKeyFormValue === '') {
+          self.createNotificationErrors.push('Se debe seleccionar un tipo de notificación')
+          // console.log('Entré 6')
+          self.confirmationModal = false
+        }
+        if (self.familyKeyFormValue === '') {
+          self.createNotificationErrors.push('Se debe seleccionar una clave de familia')
+          // console.log('Entré 7')
+          self.confirmationModal = false
+        }
+      } else if (self.tab === 'plantel') {
+        /*
+          No se hará nada hasta el momento
+        */
+      } else if (self.tab === 'administradores') {
+        // self.familyKeysInArray = []
+        // console.log('Hola')
+        /* Esta funcionalidad esta pendiente aún */
+        /*
+          Tipo de Notificación
+          Asunto de la Notificación
+          Descripción de la notificación
+          Rol
+          Campus
+          Fecha seleccionada
+          Grado
+        */
+        // self.familyKeysInArray = []
+        var roleToSendInAdministrationTab = 'ADMIN'
+        console.log('Entré')
+        // && self.grado !== null
+        if (self.campus !== null && self.tipoDeNotificacion !== '' && self.descripcionDeLaNotificacion !== '' && self.tituloDeLaNotificacion !== '') {
+          var notificationX = {
+            category: self.tipoDeNotificacion,
+            title: self.tituloDeLaNotificacion,
+            description: self.descripcionDeLaNotificacion,
+            publication_date: date.formatDate(self.date, 'DD/MM/YYYY'),
+            role: roleToSendInAdministrationTab,
+            campuses: self.campus,
+            grades: self.grado,
+            groups: self.grupo
+          }
+          console.log(notificationX)
+          // Aquí se hará el envío de la notificación
+          // var completeUrlForAdministratorsNotification = 'https://oxford-app-api.herokuapp.com/v1/notifications/'
+          /*
+          axios.get(completeUrlForAdministratorsNotification, {
+            headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token'), 'Content-Type': 'application/json' },
+            notification: notification
+          })
+            .then(function (response) {
+              self.confirmationPrimaryButtons = false
+              self.confirmationSecondaryButtons = true
+              console.log(response)
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+            */
+          axios.post('https://oxford-app-api.herokuapp.com/v1/notifications/', {
+            notification: notificationX
+          },
+          { headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token'), 'Content-Type': 'application/json' } })
+            .then(function (response) {
+              self.confirmationPrimaryButtons = false
+              self.confirmationSecondaryButtons = true
+              console.log(response)
+            })
+            .catch(function (error) {
+              console.log('----')
+              console.log(error)
+              console.log('----')
+            })
+        }
+        if (self.campus === null) {
+          self.createNotificationErrors.push('Se debe seleccionar por lo menos un campus')
+          self.confirmationModal = false
+        }
+        if (self.tipoDeNotificacion === '') {
+          self.createNotificationErrors.push('Se debe seleccionar un tipo de notificación')
+          self.confirmationModal = false
+        }
+        if (self.descripcionDeLaNotificacion === '') {
+          self.createNotificationErrors.push('Se debe ingregar la descripción de la notificación')
+          self.confirmationModal = false
+        }
+        /*
+        if (self.grado === null) {
+          self.createNotificationErrors.push('Se debe seleccionar por lo menos un grado')
+          self.confirmationModal = false
+        }
+        */
+        if (self.tituloDeLaNotificacion === '') {
+          self.createNotificationErrors.push('Se debe de ingresar el título de la notificación')
+          self.confirmationModal = false
+        }
+      }
     },
-    openSingleNotification () {
+    addRemoveFamilyKid (kidFullName) {
+      // console.log(kidFullName)
       var self = this
+      var eliminador = false
+      var posicion = null
+      // console.log(kidFullName in self.studentNamesToSend)
+      /*
+      if (kidFullName in self.studentNamesToSend) {
+        for (var i = 0; i < self.studentNamesToSend.length; i++) {
+          if (self.studentNamesToSend[i] === kidFullName) {
+            self.studentNamesToSend = self.studentNamesToSend.splice(i, 1)
+          }
+        }
+      } else {
+        self.studentNamesToSend.push(kidFullName)
+      }
+      */
+      for (var i = 0; i < self.studentNamesToSend.length; i++) {
+        if (self.studentNamesToSend[i] === kidFullName) {
+          // self.studentNamesToSend = self.studentNamesToSend.splice(i, 1)
+          eliminador = true
+          posicion = i
+          console.log('Se encontró a ' + kidFullName + ' en el arreglo')
+        }
+      }
+      if (eliminador) {
+        // self.studentNamesToSend = self.studentNamesToSend.splice(posicion, 1)
+        self.studentNamesToSend.splice(posicion, 1)
+        console.log('Se eliminó a ' + kidFullName + ' del arreglo')
+      } else {
+        console.log('Se agregó a ' + kidFullName + ' en el arreglo')
+        self.studentNamesToSend.push(kidFullName)
+      }
+      // eliminador = false
+    },
+    openSingleNotification (notificationID, notificationAssist) {
+      // console.log()
+      console.log('Acabo de entrar a hacer que la notificación se haga vista por primera vez')
+      var self = this
+      console.log('ID de la notificación: ' + notificationID)
+      console.log('Asistencia de la notificación: ' + notificationAssist)
+      /**/
+      var completeUrl = 'https://oxford-app-api.herokuapp.com/v1/notifications/update_notification/' + notificationID
+      console.log(completeUrl)
+      var token = window.localStorage.getItem('token')
+      console.log(token)
+      /*
+      axios.post(completeUrl, {
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        notification: {
+          assist: notificationAssist,
+          seen: true
+        }
+      })
+        .then(function (response) {
+          console.log(response)
+          self.getMyNotifications()
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+        */
+      axios.post('https://oxford-app-api.herokuapp.com/v1/notifications/update_notification/' + notificationID, {
+        // Parámetros
+        notification: {
+          assist: notificationAssist,
+          seen: true
+        }
+      },
+      { headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token'), 'Content-Type': 'application/json' } })
+        .then(function (response) {
+          console.log(response)
+          self.getMyNotifications()
+          self.getNotificationCountersByUserID()
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      /**/
+      self.singleNotificationID = notificationID
       self.title = 'Mi Notificación'
       self.inicio = false
       self.leftDrawerOpen = false
@@ -499,13 +1185,111 @@ export default {
       self.myNotifications = false
       self.myNotificationComponent = true
     },
-    changeStatus () {
+    changeStatus (singleNotificationID, singleNotificationAssist, singleNotificationSeen) {
       var self = this
-      if (self.assistanceStatus === 'No asistiré') {
-        self.assistanceStatus = 'Asistiré'
-      } else if (self.assistanceStatus === 'Asistiré') {
-        self.assistanceStatus = 'No asistiré'
+      // ESTA ES PARA CUANDO SE SELECCIONA EL BOTÓN DE ASISTIR O NO ASISTIR
+      // console.log('Prueba')
+      // var self = this
+      // if (self.assistanceStatus === 'No asistiré') {
+      //   self.assistanceStatus = 'Asistiré'
+      // } else if (self.assistanceStatus === 'Asistiré') {
+      //   self.assistanceStatus = 'No asistiré'
+      // }
+      // console.log(singleNotificationID)
+      // console.log(singleNotificationStatus)
+      var assist = singleNotificationAssist
+      if (assist === true) {
+        assist = false
+      } else if (assist === false) {
+        assist = true
       }
+      // var completeUrl = 'https://oxford-app-api.herokuapp.com/v1/notifications/update_notification/1'
+      // var token = window.localStorage.getItem('token')
+      /*
+      axios.post(completeUrl, {
+        headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token'), 'Content-Type': 'application/json' },
+        notification: {
+          seen: singleNotificationSeen,
+          assist: assist
+        }
+      })
+        .then(function (response) {
+          console.log(response)
+          self.getMyNotifications()
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      */
+      /*
+      axios.post(completeUrl, {
+        notification: {
+          seen: true,
+          assist: true
+        }
+      },
+      { headers: { 'Authorization:': token, 'Content-Type:': 'application/json' } })
+        .then(function (response) {
+          console.log(response)
+        })
+        .catch(function (error) {
+          alert(error)
+        })
+        */
+      axios.post('https://oxford-app-api.herokuapp.com/v1/notifications/update_notification/' + singleNotificationID, {
+        // Parámetros
+        notification: {
+          assist: assist,
+          seen: singleNotificationSeen
+        }
+      },
+      { headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token'), 'Content-Type': 'application/json' } })
+        .then(function (response) {
+          self.getMyNotifications()
+          self.getNotificationCountersByUserID()
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    getNotificationCountersByUserID () {
+      var self = this
+      var completeUrl = 'https://oxford-app-api.herokuapp.com/v1/notifications/notification_counters/' + window.localStorage.getItem('id')
+      axios.get(completeUrl, {
+        headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token') }
+      })
+        .then(function (response) {
+          console.log('Se obtuvieron los counters de las notificaciones leídas y no leídas')
+          console.log(response)
+          console.log(response.data.not_seen_notifications)
+          console.log(response.data.seen_notifications)
+          self.contadorNotificacionesNoVistas = response.data.not_seen_notifications
+          self.contadorNotificacionesVistas = response.data.seen_notifications
+          console.log(self.contadorNotificacionesNoVistas)
+          console.log(self.contadorNotificacionesVistas)
+        })
+        .catch(function (error) {
+          // console.log('No se obtuvieron los counters de las notificaciones leídas y no leídas')
+          console.log(error)
+        })
+    },
+    getAllFamilyKeys () {
+      var self = this
+      var completeUrl = 'https://oxford-app-api.herokuapp.com/v1/all_family_keys'
+      axios.get(completeUrl, {
+        headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token') }
+      })
+        .then(function (response) {
+          // console.log('Se obtuvieron todas las family keys')
+          // console.log(response)
+          self.allFamilyKeys = response.data.family_keys
+          // console.log(self.allFamilyKeys)
+        })
+        .catch(function (error) {
+          // console.log('No se obtuvieron todas las family keys')
+          console.log(error)
+        })
     },
     getMyNotifications () {
       var self = this
@@ -515,9 +1299,19 @@ export default {
       })
         .then(function (response) {
           // console.log('Se obtuvieron las notificaciones')
-          self.notificationsLength = response.data.length
+          // self.notificationsLength = response.data.length
           // console.log(self.notificationsLength)
           console.log(response)
+          self.allMyNotifications = response.data
+          console.log(self.allMyNotifications)
+          self.notificationsLength = self.allMyNotifications.length
+          console.log(self.allMyNotifications.length)
+          for (var i = 0; i < self.allMyNotifications.length; i++) {
+            if (self.allMyNotifications[i].seen === false) {
+              self.allMyNotSeenNotifications++
+            }
+          }
+          console.log('Notificaciones no leídas: ' + self.allMyNotSeenNotifications)
         })
         .catch(function (error) {
           console.log(error)
@@ -559,6 +1353,8 @@ export default {
         window.open('http://oxfordschool.edu.mx/index.aspx?seccion=cafeteria')
       } else if (linkValue === 'google') {
         window.open('http://google.com')
+      } else if (linkValue === 'horarioDeCaja') {
+        window.open('https://oxfordschool.edu.mx/index.aspx?seccion=noticias&id=2900')
       }
     },
     dummyLink (linkValue) {
@@ -685,6 +1481,7 @@ export default {
       self.myNotificationCreation = false
       self.myNotifications = false
       self.myNotificationComponent = false
+      self.notificationStatus = false
     },
     openMyFamily () {
       var self = this
@@ -697,6 +1494,7 @@ export default {
       self.myNotificationCreation = false
       self.myNotifications = false
       self.myNotificationComponent = false
+      self.notificationStatus = false
     },
     openMyLinks () {
       var self = this
@@ -709,6 +1507,7 @@ export default {
       self.myNotificationCreation = false
       self.myNotifications = false
       self.myNotificationComponent = false
+      self.notificationStatus = false
     },
     openMyInicio () {
       var self = this
@@ -721,16 +1520,31 @@ export default {
       self.myNotificationCreation = false
       self.myNotifications = false
       self.myNotificationComponent = false
+      self.notificationStatus = false
     },
     openNotificationCreation () {
       var self = this
-      self.title = 'Creación de Notificación'
+      self.title = 'Envío de Notificación'
       self.inicio = false
       self.leftDrawerOpen = false
       self.myInformation = false
       self.myFamily = false
       self.myLinks = false
       self.myNotificationCreation = true
+      self.myNotifications = false
+      self.myNotificationComponent = false
+      self.notificationStatus = false
+    },
+    openNotificationStatus () {
+      var self = this
+      self.title = 'Estado de Notificación'
+      self.notificationStatus = true
+      self.inicio = false
+      self.leftDrawerOpen = false
+      self.myInformation = false
+      self.myFamily = false
+      self.myLinks = false
+      self.myNotificationCreation = false
       self.myNotifications = false
       self.myNotificationComponent = false
     },
@@ -745,16 +1559,46 @@ export default {
       self.myNotificationCreation = false
       self.myNotifications = true
       self.myNotificationComponent = false
-    }
-  },
-  beforeRouteLeave (to, from, next) {
-    const answer = window.confirm('¿Quieres salir de tu sesión?')
-    if (answer) {
-      window.localStorage.removeItem('token')
-      // console.log('Token removido desde la función beforeRouteLeave()')
-      next()
-    } else {
-      next(false)
+      self.notificationStatus = false
+    },
+    beforeRouteLeave (to, from, next) {
+      const answer = window.confirm('¿Quieres salir de tu sesión?')
+      if (answer) {
+        window.localStorage.removeItem('token')
+        // console.log('Token removido desde la función beforeRouteLeave()')
+        next()
+      } else {
+        next(false)
+      }
+    },
+    filterFn (val, update, abort) {
+      update(() => {
+        const needle = val.toLowerCase()
+        this.allFamilyKeysNotFiltered = this.allFamilyKeys.filter(v => v.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    searchKidsOfFamilyKeySelected () {
+      var self = this
+      if (self.familyKeyFormValue !== '') {
+        self.notSelectedFamilyKey = false
+        var token = window.localStorage.getItem('token')
+        var completeUrl = 'https://oxford-app-api.herokuapp.com/v1/kids/by_family_key/' + self.familyKeyFormValue
+        axios.get(completeUrl, {
+          headers: { 'Authorization': 'Bearer ' + token }
+        })
+          .then(function (response) {
+            // console.log('Hay niños de la clave de familia seleccionada')
+            // console.log(response)
+            self.searchedKidsByFamilyKey = response.data
+            // console.log(self.searchedKidsByFamilyKey)
+          })
+          .catch(function (error) {
+            // console.log('No hay niños de la clave de familia seleccionada')
+            console.log(error)
+          })
+      } else {
+        self.notSelectedFamilyKey = true
+      }
     }
   }
 }
@@ -1120,5 +1964,56 @@ export default {
   }
   .individual-notification-error{
     color: red;
+  }
+  .select-and-autocomplete-familykey{
+    /* background-color: green; */
+    /* width: 100%; */
+    /* text-align: center; */
+    /* display: inline-block; */
+    /* height: auto; */
+  }
+  .a-fk-element-e1{
+    display: inline-block;
+    /* width: 90%; */
+  }
+  .a-fk-element-e2{
+    display: inline-block;
+    /* width: 25%; */
+    margin-left: 5px;
+  }
+  .kid-from-family-key-searched{
+    border: 1px solid #DCDCDC;
+    font-size: 8pt;
+    border-radius: 2.5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .notifications-board{
+    border: 1px solid #DCDCDC;
+    height: 100;
+    /* bottom: 0; */
+    margin: 5px 5px 5px 5px;
+  }
+  .counter-kids{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* text-align: left; */
+    font-size: 10pt;
+  }
+  .selected-kids-section{
+    border: 1px solid #1E90FF;
+    margin-top: 10px;
+  }
+  .allowed-kids-to-select-sign{
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .notification-search-modal{
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 </style>
