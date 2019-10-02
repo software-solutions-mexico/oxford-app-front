@@ -10,16 +10,22 @@
     </div>
     <!-- <div class="space-for-top-nav-bar"></div> -->
     <div class="input-field-username">
-      <q-input outlined v-model="username" label="Correo electrónico" class="field-input"/>
+      <!-- <q-input outlined v-model="username" label="Correo electrónico" class="field-input"/> -->
+      <q-input outlined v-model="username" placeholder="Correo electrónico" class="field-input"/>
       <div class="missing-information" v-if="noEmail">Ingresa tu correo</div>
     </div>
     <div class="input-field-password">
-      <q-input outlined v-model="password" label="Contraseña" type="password" class="field-input"/>
+      <!-- <q-input outlined v-model="password" label="Contraseña" type="password" class="field-input"/> -->
+      <q-input outlined v-model="password" placeholder="Contraseña" type="password" class="field-input"/>
       <div class="missing-information" v-if="noPassword">Ingresa tu contraseña</div>
     </div>
     <div class="input-field-family-key">
-      <q-input outlined v-model="familyKey" label="Clave de familia" class="field-input"/>
-      <div class="missing-information" v-if="noFamilyKey">Ingresa tu clave de familia</div>
+      <!-- <q-input outlined v-model="familyKey" label="Clave de familia" class="field-input"/> -->
+      <!-- <q-input outlined v-model="familyKey" placeholder="Clave de familia" class="field-input"/> -->
+      <!-- <q-input outlined v-model="familyKey" placeholder="Clave de familia" class="field-input" :rules="[ val => val.length <= 4 || 'Favor de usar máximo 4 caracteres']"/> -->
+      <q-input outlined v-model="familyKey" placeholder="Clave de familia" class="field-input" :rules="[ val => val.length <= 4 || 'Favor de usar máximo 4 caracteres']"/>
+      <div class="missing-information" v-if="noFamilyKey"><br>Ingresa tu clave de familia</div>
+      <br>
     </div>
     <!-- <div class="incorrect-login" v-if="incorrectLogin">Correo y/o contraseña incorrectos</div> -->
     <div class="incorrect-login" v-if="incorrectLogin">
@@ -31,14 +37,14 @@
     </div>
     <div class="login-button-container">
       <div v-if="realButtton">
-        <q-btn :loading="loading1" id="loginButton" color="white" text-color="black" no-caps label="Iniciar Sesión" @click="login()"/>
+        <q-btn :loading="loading1" id="loginButton" color="white" text-color="black" no-caps label="Iniciar Sesión" @click="login()" class="size-for-button"/>
       </div>
       <div v-if="fakeButtton">
-        <q-btn disabled color="white" text-color="black" no-caps label="Iniciando sesión ..."/>
+        <q-btn disabled color="white" text-color="black" no-caps label="Iniciando sesión ..." class="size-for-button"/>
       </div>
       <div class="forgotten-password-link"><span @click="forgotPassword()">¿Olvidaste tu Contraseña?</span></div>
     </div>
-    <br>
+    <!-- <br> -->
     <!--
     <div class="message-sign">Crea tu cuenta para:</div>
     <div class="bottom-nav-bar">
@@ -256,6 +262,7 @@ export default {
   .forgotten-password-link{
     color: #1e90ff;
     padding-top: 10px;
+    font-size: 15pt;
   }
   .forgot-password-modal{
     background-color: white;
@@ -296,5 +303,8 @@ export default {
   .missing-information{
     color: red;
     text-align: center;
+  }
+  .size-for-button{
+    height: 48px;
   }
 </style>
