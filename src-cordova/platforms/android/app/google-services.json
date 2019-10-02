@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "124846747994",
+    "firebase_url": "https://oxford-app-api.firebaseio.com",
+    "project_id": "oxford-app-api",
+    "storage_bucket": "oxford-app-api.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124846747994:android:640512623f8be948384363",
+        "android_client_info": {
+          "package_name": "org.ose.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124846747994-e418stvb75icii3ktapa4udpl66g1c9g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDytkr5ZtAAD62e8yRg0ebCaATri8Y1PPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124846747994-e418stvb75icii3ktapa4udpl66g1c9g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
