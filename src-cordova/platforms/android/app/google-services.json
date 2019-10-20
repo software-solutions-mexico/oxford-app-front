@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:124846747994:android:640512623f8be948384363",
+        "mobilesdk_app_id": "1:124846747994:android:0801dc44c45284d8384363",
         "android_client_info": {
-          "package_name": "org.ose.app"
+          "package_name": "org.ose.movil"
         }
       },
       "oauth_client": [
@@ -30,6 +30,13 @@
             {
               "client_id": "124846747994-e418stvb75icii3ktapa4udpl66g1c9g.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "124846747994-37u31v0kf68da7drle72qoi2ei40hec5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.ose.appose"
+              }
             }
           ]
         }
